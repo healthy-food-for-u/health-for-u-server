@@ -8,10 +8,10 @@
 		<version>3.5.10-SNAPSHOT</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com</groupId>
-	<artifactId>healthforu</artifactId>
+	<groupId>com.healthforu</groupId>
+	<artifactId>health-for-u-server</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>healthforu</name>
+	<name>health-for-u-server</name>
 	<description>recommend healthy food for you</description>
 	<url/>
 	<licenses>

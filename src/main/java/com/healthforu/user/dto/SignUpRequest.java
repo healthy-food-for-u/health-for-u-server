@@ -13,10 +13,10 @@ public class SignUpRequest {
     private String password;
 
     public SignUpRequest(String loginId, String userName, String email, String mobile, String password){
-        this.loginId = loginId;
-        this.userName = userName;
-        this.email = email;
-        this.mobile = mobile;
-        this.password = password;
+        this.loginId=loginId;
+        this.userName=userName;
+        this.email=email;
+        this.mobile=mobile;
+        this.password=password;
     }
 }

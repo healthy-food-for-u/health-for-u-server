@@ -1,15 +1,12 @@
 package com.healthforu.user.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
-@Document(collection = "users") // 실제 MongoDB 컬렉션 이름
+@Document(collection = "users")
 @Getter
 public class User {
 

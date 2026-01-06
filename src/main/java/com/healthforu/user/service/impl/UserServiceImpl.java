@@ -5,6 +5,7 @@ import com.healthforu.common.exception.custom.DuplicateMobileException;
 import com.healthforu.common.exception.custom.DuplicateUserException;
 import com.healthforu.common.exception.custom.UserNotFoundException;
 import com.healthforu.user.domain.User;
+import com.healthforu.user.dto.LoginRequest;
 import com.healthforu.user.dto.SignUpRequest;
 import com.healthforu.user.dto.UserResponse;
 import com.healthforu.user.repository.UserRepository;
@@ -20,7 +21,7 @@ import org.springframework.stereotype.Service;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder; // final을 붙여야 생성자 주입이 됨
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public UserResponse signUp(SignUpRequest request) {
@@ -42,12 +43,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserResponse login(String loginId, String password) {
+    public UserResponse login(LoginRequest request) {
 
-        User user = userRepository.findByLoginId(loginId)
+        User user = userRepository.findByLoginId(request.getLoginId())
                 .orElseThrow(() -> new UserNotFoundException());
 
-        if(!passwordEncoder.matches(password, user.getPassword())){
+        if(!passwordEncoder.matches(request.getPassword(), user.getPassword())){
             throw new UserNotFoundException();
         }
 

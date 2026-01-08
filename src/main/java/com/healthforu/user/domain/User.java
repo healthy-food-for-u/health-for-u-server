@@ -3,6 +3,7 @@ package com.healthforu.user.domain;
 import lombok.Builder;
 import lombok.Getter;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
@@ -13,13 +14,16 @@ public class User {
     @Id // MongoDB의 _id 필드와 매핑됩니다.
     private String id;
 
+    @Indexed(unique = true)
     @Field("id")
     private String loginId;
 
     private String userName;
 
+    @Indexed(unique = true)
     private String email;
 
+    @Indexed(unique = true)
     private String mobile;
 
     private String password; // 암호화된 비밀번호 ($2b$10... 형식이니 그대로 String)

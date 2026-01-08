@@ -1,9 +1,6 @@
 package com.healthforu.user.service.impl;
 
-import com.healthforu.common.exception.custom.DuplicateEmailException;
-import com.healthforu.common.exception.custom.DuplicateMobileException;
-import com.healthforu.common.exception.custom.DuplicateUserException;
-import com.healthforu.common.exception.custom.UserNotFoundException;
+import com.healthforu.common.exception.custom.*;
 import com.healthforu.user.domain.User;
 import com.healthforu.user.dto.LoginRequest;
 import com.healthforu.user.dto.SignUpRequest;
@@ -27,6 +24,10 @@ public class UserServiceImpl implements UserService {
     public UserResponse signUp(SignUpRequest request) {
         validateDuplicateUser(request);
 
+        if (!request.getPassword().equals(request.getConfirmPassword())) {
+            throw new PasswordNotMatchException();
+        }
+
         String encodedPassword = passwordEncoder.encode(request.getPassword());
 
         User newUser = new User(
@@ -43,14 +44,17 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserResponse login(LoginRequest request) {
+    public UserResponse login(LoginRequest request, HttpServletRequest httpServletRequest) {
 
         User user = userRepository.findByLoginId(request.getLoginId())
                 .orElseThrow(() -> new UserNotFoundException());
 
         if(!passwordEncoder.matches(request.getPassword(), user.getPassword())){
-            throw new UserNotFoundException();
+            throw new PasswordNotMatchException();
         }
+
+        HttpSession session = httpServletRequest.getSession(true);
+        session.setAttribute("LOGIN_USER", user.getLoginId());
 
         return UserResponse.from(user);
     }
@@ -65,7 +69,7 @@ public class UserServiceImpl implements UserService {
 
     private void validateDuplicateUser(SignUpRequest request) {
         if (userRepository.existsByLoginId(request.getLoginId())) {
-            throw new DuplicateUserException();
+            throw new DuplicateIdException();
         }
         if (userRepository.existsByEmail(request.getEmail())) {
             throw new DuplicateEmailException();

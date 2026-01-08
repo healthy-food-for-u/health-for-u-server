@@ -9,7 +9,7 @@ public interface UserService {
 
     UserResponse signUp(SignUpRequest request);
 
-    UserResponse login(LoginRequest request);
+    UserResponse login(LoginRequest request, HttpServletRequest httpServletRequest);
 
     void logout(HttpServletRequest request);
 }

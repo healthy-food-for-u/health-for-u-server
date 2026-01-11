@@ -2,6 +2,7 @@ package com.healthforu.user.domain;
 
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -9,6 +10,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
 
 @Document(collection = "users")
 @Getter
+@NoArgsConstructor
 public class User {
 
     @Id // MongoDB의 _id 필드와 매핑됩니다.

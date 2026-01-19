@@ -35,8 +35,8 @@ public class Recipe {
     @Getter
     @AllArgsConstructor
     public static class ManualStep {
-        private int step;
-        private String text;
+        private int stepNumber;
+        private String stepDescription;
         private String imageUrl;
     }
 }

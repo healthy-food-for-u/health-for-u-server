@@ -93,7 +93,6 @@ public class RecipeDataInitializer {
      * @return 수집된 RawRecipeDto 리스트
      */
     private List<RawRecipeDto> fetchRecipesFromApi(){
-
         String authKey = env.getProperty("AUTH_KEY");
         String serviceId = env.getProperty("SERVICE_ID");
         String dataType = env.getProperty("DATA_TYPE");

@@ -1,7 +1,6 @@
 package com.healthforu.recipe.domain;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -15,9 +14,11 @@ import java.util.List;
  * 따라서 현재 서비스 내에서는 데이터의 무결성을 위해 별도의 생성/수정/삭제 로직 없이
  * 조회(Read) 기능 위주로 구성되어 있습니다.
  */
+@Builder
 @Document(collection = "recipes")
 @Getter
-@NoArgsConstructor
+@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Recipe {
 
     @Id
@@ -32,7 +33,7 @@ public class Recipe {
     private String recipeThumbnail;
 
     @Getter
-    @NoArgsConstructor
+    @AllArgsConstructor
     public static class ManualStep {
         private int step;
         private String text;

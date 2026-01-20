@@ -1,5 +1,6 @@
 package com.healthforu.disease.domain;
 
+import com.healthforu.category.domain.Category;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -30,7 +31,6 @@ public class Disease {
 
     private String recommended;
 
-    @DBRef(db="categories")
     private String categoryId;
 
 }

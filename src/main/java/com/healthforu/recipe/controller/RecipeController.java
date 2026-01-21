@@ -18,9 +18,10 @@ public class RecipeController {
     @GetMapping("/{recipeId}")
     public ResponseEntity<RecipeResponse> getRecipeDetail(
             @PathVariable("recipeId") String recipeId,
-            @RequestParam("diseaseId") String diseaseId) {
+            @RequestParam("diseaseId") String diseaseId,
+            @RequestParam("userId") String userId) {
 
-        return ResponseEntity.ok(recipeService.getRecipe(diseaseId, recipeId));
+        return ResponseEntity.ok(recipeService.getRecipe(diseaseId, recipeId, userId));
     }
 
     @GetMapping

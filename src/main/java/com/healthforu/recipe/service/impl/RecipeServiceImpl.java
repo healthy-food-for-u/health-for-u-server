@@ -4,6 +4,7 @@ import com.healthforu.common.exception.custom.DiseaseNotFoundException;
 import com.healthforu.common.exception.custom.RecipeNotFoundException;
 import com.healthforu.disease.domain.Disease;
 import com.healthforu.disease.repository.DiseaseRepository;
+import com.healthforu.favorites.repository.FavoriteRepository;
 import com.healthforu.recipe.domain.Recipe;
 import com.healthforu.recipe.dto.RecipeResponse;
 import com.healthforu.recipe.repository.RecipeRepository;
@@ -21,6 +22,7 @@ public class RecipeServiceImpl implements RecipeService {
 
     private final RecipeRepository recipeRepository;
     private final DiseaseRepository diseaseRepository;
+    private final FavoriteRepository favoriteRepository;
 
     /**
      * 특정 질병의 주의 성분을 필터링하고 검색어(keyword)를 포함한 레시피 목록 조회
@@ -40,12 +42,12 @@ public class RecipeServiceImpl implements RecipeService {
 
             return recipePage.map(recipe -> {
                 boolean isCaution = checkCaution(recipe, disease);
-                return RecipeResponse.from(recipe, isCaution);
+                return RecipeResponse.from(recipe, isCaution, false);
             });
 
         } else {
             return recipeRepository.findByExcludeCaution(disease, pageable)
-                    .map(recipe -> RecipeResponse.from(recipe, false));
+                    .map(recipe -> RecipeResponse.from(recipe, false, false));
         }
 
     }
@@ -57,7 +59,7 @@ public class RecipeServiceImpl implements RecipeService {
      * @param recipeId
      */
     @Override
-    public RecipeResponse getRecipe(String diseaseId, String recipeId) {
+    public RecipeResponse getRecipe(String diseaseId, String recipeId, String userId) {
         Disease disease = diseaseRepository.findById(diseaseId)
                 .orElseThrow(() -> new DiseaseNotFoundException());
 
@@ -65,8 +67,13 @@ public class RecipeServiceImpl implements RecipeService {
                 .orElseThrow(() -> new RecipeNotFoundException());
 
         boolean isCaution = checkCaution(recipe, disease);
+        boolean isFavorite = false;
 
-        return RecipeResponse.from(recipe, isCaution);
+        if (userId != null && !userId.isBlank()) {
+            isFavorite = favoriteRepository.existsByUserIdAndRecipeId(userId, recipeId);
+        }
+
+        return RecipeResponse.from(recipe, isCaution, isFavorite);
     }
 
     private boolean checkCaution(Recipe recipe, Disease disease){

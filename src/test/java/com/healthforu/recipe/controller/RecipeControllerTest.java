@@ -45,9 +45,10 @@ class RecipeControllerTest {
                 "새우",
                 List.of(step1, step2),
         "recipeThumbnail!",
-        false);
+        false,
+                false);
 
-        when(recipeService.getRecipe(anyString(), anyString()))
+        when(recipeService.getRecipe(anyString(), anyString(), anyString()))
                 .thenReturn(recipeResponse);
 
         mockMvc.perform(get("/api/recipes/recipe-1")
@@ -73,6 +74,7 @@ class RecipeControllerTest {
                 "새우",
                 List.of(step1, step2),
                 "recipeThumbnail!",
+                false,
                 false);
 
         RecipeResponse recipeResponse2 = new RecipeResponse(
@@ -81,6 +83,7 @@ class RecipeControllerTest {
                 "소고기",
                 List.of(step1, step2),
                 "recipeThumbnail!",
+                false,
                 false);
 
         RecipeResponse recipeResponse3 = new RecipeResponse(
@@ -89,6 +92,7 @@ class RecipeControllerTest {
                 "마시멜로우",
                 List.of(step1, step2),
                 "recipeThumbnail!",
+                false,
                 false);
 
         Page<RecipeResponse> mockPage = new PageImpl<>(List.of(recipeResponse1, recipeResponse2));

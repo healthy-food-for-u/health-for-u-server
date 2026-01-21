@@ -13,5 +13,5 @@ public interface RecipeService {
     /**
      * 특정 레시피 상세 조회 (사용자의 질병 정보와 대조하여 주의 사항이 있는지 함께 확인)
      */
-    RecipeResponse getRecipe(String diseaseId, String recipeId);
+    RecipeResponse getRecipe(String diseaseId, String recipeId, String userId);
 }

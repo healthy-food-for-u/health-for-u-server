@@ -31,7 +31,7 @@ public class FavoriteServiceImpl implements FavoriteService {
     @Override
     public void toggleFavorite(String userId, String recipeId) {
 
-        if(!userRepository.existsByLoginId(userId)){
+        if(!userRepository.existsById(userId)){
             throw new UserNotFoundException();
         }
 
@@ -61,7 +61,7 @@ public class FavoriteServiceImpl implements FavoriteService {
      */
     @Override
     public List<FavoriteListResponse> getFavoriteRecipes(String userId) {
-        if(!userRepository.existsByLoginId(userId)){
+        if(!userRepository.existsById(userId)){
             throw new UserNotFoundException();
         }
 

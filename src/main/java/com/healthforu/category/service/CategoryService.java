@@ -7,7 +7,4 @@ import java.util.List;
 public interface CategoryService {
     /** 모든 카테고리 조회 (오름차순 정렬) */
     List<CategoryResponse> getAllCategories();
-    
-    /** 특정 슬러그로 카테고리 정보 찾기 */
-    CategoryResponse getCategoryBySlug(String slug);
 }

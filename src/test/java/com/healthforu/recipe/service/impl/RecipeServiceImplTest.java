@@ -5,6 +5,7 @@ import com.healthforu.disease.repository.DiseaseRepository;
 import com.healthforu.recipe.domain.Recipe;
 import com.healthforu.recipe.dto.RecipeResponse;
 import com.healthforu.recipe.repository.RecipeRepository;
+import com.healthforu.user.domain.User;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -98,6 +99,9 @@ class RecipeServiceImplTest {
     @Test
     @DisplayName("주의 성분이 들어있는 특정 레시피 조회")
     void getRecipe_caution() {
+        User user = User.builder().build();
+        ReflectionTestUtils.setField(user, "id", "user-1");
+
         Disease disease = Disease.builder().caution("새우").build();
         ReflectionTestUtils.setField(disease, "id", "disease-1");
 
@@ -107,7 +111,7 @@ class RecipeServiceImplTest {
         when(diseaseRepository.findById(anyString())).thenReturn(Optional.of(disease));
         when(recipeRepository.findById(anyString())).thenReturn(Optional.of(recipe));
 
-        RecipeResponse result = recipeService.getRecipe(disease.getId(), recipe.getId());
+        RecipeResponse result = recipeService.getRecipe(disease.getId(), recipe.getId(), user.getId());
 
         assertNotNull(result);
         assertEquals("새우 죽", result.recipeName());
@@ -119,6 +123,9 @@ class RecipeServiceImplTest {
     @Test
     @DisplayName("주의 성분이 들어있는 특정 레시피 조회")
     void getRecipe() {
+        User user = User.builder().build();
+        ReflectionTestUtils.setField(user, "id", "user-1");
+
         Disease disease = Disease.builder().caution("소고기").build();
         ReflectionTestUtils.setField(disease, "id", "disease-1");
 
@@ -128,7 +135,7 @@ class RecipeServiceImplTest {
         when(diseaseRepository.findById(anyString())).thenReturn(Optional.of(disease));
         when(recipeRepository.findById(anyString())).thenReturn(Optional.of(recipe));
 
-        RecipeResponse result = recipeService.getRecipe(disease.getId(), recipe.getId());
+        RecipeResponse result = recipeService.getRecipe(disease.getId(), recipe.getId(), user.getId());
 
         assertNotNull(result);
         assertEquals("새우 죽", result.recipeName());

@@ -4,6 +4,7 @@ import com.healthforu.category.dto.CategoryWithDiseasesResponse;
 import com.healthforu.disease.dto.DiseaseResponse;
 import com.healthforu.disease.service.DiseaseService;
 import lombok.RequiredArgsConstructor;
+import org.bson.types.ObjectId;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,7 +18,7 @@ public class DiseaseController {
     private final DiseaseService diseaseService;
 
     @GetMapping("/{diseaseId}")
-    public ResponseEntity<DiseaseResponse> getDiseaseDetail(@PathVariable("diseaseId") String diseaseId){
+    public ResponseEntity<DiseaseResponse> getDiseaseDetail(@PathVariable("diseaseId") ObjectId diseaseId){
 
         return ResponseEntity.ok(diseaseService.getDisease(diseaseId));
     }

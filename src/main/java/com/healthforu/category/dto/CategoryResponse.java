@@ -1,9 +1,10 @@
 package com.healthforu.category.dto;
 
 import com.healthforu.category.domain.Category;
+import org.bson.types.ObjectId;
 
 public record CategoryResponse(
-    String id,
+    ObjectId id,
     Integer sortOrder,
     String iconUrl,
     String categoryName,

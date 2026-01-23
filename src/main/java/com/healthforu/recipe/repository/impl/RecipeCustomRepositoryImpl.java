@@ -29,7 +29,7 @@ public class RecipeCustomRepositoryImpl implements RecipeCustomRepository {
 
     @Override
     public Page<Recipe> findByExcludeCaution(Disease disease, Pageable pageable) {
-        Query query = new Query().with(pageable);
+        Query query = new Query();
 
         String cautionRaw = disease.getCaution();
 
@@ -53,8 +53,11 @@ public class RecipeCustomRepositoryImpl implements RecipeCustomRepository {
             }
         }
 
-        List<Recipe> recipes = mongoTemplate.find(query, Recipe.class);
         long totalCount = mongoTemplate.count(query, Recipe.class);
+
+        query.with(pageable);
+
+        List<Recipe> recipes = mongoTemplate.find(query, Recipe.class);
 
         return PageableExecutionUtils.getPage(recipes, pageable, () -> totalCount);
     }

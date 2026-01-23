@@ -6,6 +6,7 @@ import com.healthforu.recipe.domain.Recipe;
 import com.healthforu.recipe.dto.RecipeResponse;
 import com.healthforu.recipe.repository.RecipeRepository;
 import com.healthforu.user.domain.User;
+import org.bson.types.ObjectId;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -52,7 +53,7 @@ class RecipeServiceImplTest {
         when(recipeRepository.findByRecipeNameContaining(eq("국"), any(Pageable.class)))
                 .thenReturn(recipePage);
 
-        Page<RecipeResponse> result = recipeService.getAllRecipes("disease-1", Pageable.unpaged(), "국");
+        Page<RecipeResponse> result = recipeService.getAllRecipes(new ObjectId("disease-1"), Pageable.unpaged(), "국");
 
         assertNotNull(result);
         assertEquals(2, result.getContent().size());
@@ -83,7 +84,7 @@ class RecipeServiceImplTest {
         when(recipeRepository.findByExcludeCaution(any(Disease.class), any(Pageable.class)))
                 .thenReturn(filteredPage);
 
-        Page<RecipeResponse> result = recipeService.getAllRecipes("disease-1", Pageable.unpaged(), null);
+        Page<RecipeResponse> result = recipeService.getAllRecipes(new ObjectId("disease-1"), Pageable.unpaged(), null);
 
         assertNotNull(result);
         assertEquals(1, result.getContent().size());
@@ -103,7 +104,7 @@ class RecipeServiceImplTest {
         ReflectionTestUtils.setField(user, "id", "user-1");
 
         Disease disease = Disease.builder().caution("새우").build();
-        ReflectionTestUtils.setField(disease, "id", "disease-1");
+        ReflectionTestUtils.setField(disease, "id", new ObjectId("disease-1"));
 
         Recipe recipe = Recipe.builder().recipeName("새우 죽").ingredients("새우, 쌀").build();
         ReflectionTestUtils.setField(recipe, "id", "recipe-1");

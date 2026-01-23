@@ -10,6 +10,7 @@ import com.healthforu.recipe.dto.RecipeResponse;
 import com.healthforu.recipe.repository.RecipeRepository;
 import com.healthforu.recipe.service.RecipeService;
 import lombok.RequiredArgsConstructor;
+import org.bson.types.ObjectId;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -32,7 +33,7 @@ public class RecipeServiceImpl implements RecipeService {
      * @param keyword
      */
     @Override
-    public Page<RecipeResponse> getAllRecipes(String diseaseId, Pageable pageable, String keyword) {
+    public Page<RecipeResponse> getAllRecipes(ObjectId diseaseId, Pageable pageable, String keyword) {
         Disease disease = diseaseRepository.findById(diseaseId)
                 .orElseThrow(() -> new DiseaseNotFoundException());
 
@@ -59,7 +60,7 @@ public class RecipeServiceImpl implements RecipeService {
      * @param recipeId
      */
     @Override
-    public RecipeResponse getRecipe(String diseaseId, String recipeId, String userId) {
+    public RecipeResponse getRecipe(ObjectId diseaseId, ObjectId recipeId, ObjectId userId) {
         Disease disease = diseaseRepository.findById(diseaseId)
                 .orElseThrow(() -> new DiseaseNotFoundException());
 
@@ -69,7 +70,7 @@ public class RecipeServiceImpl implements RecipeService {
         boolean isCaution = checkCaution(recipe, disease);
         boolean isFavorite = false;
 
-        if (userId != null && !userId.isBlank()) {
+        if (userId != null) {
             isFavorite = favoriteRepository.existsByUserIdAndRecipeId(userId, recipeId);
         }
 

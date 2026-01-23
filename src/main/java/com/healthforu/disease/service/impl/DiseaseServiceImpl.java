@@ -9,6 +9,7 @@ import com.healthforu.disease.dto.DiseaseResponse;
 import com.healthforu.disease.repository.DiseaseRepository;
 import com.healthforu.disease.service.DiseaseService;
 import lombok.RequiredArgsConstructor;
+import org.bson.types.ObjectId;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -26,12 +27,12 @@ public class DiseaseServiceImpl implements DiseaseService {
      * @param diseaseId
      */
     @Override
-    public DiseaseResponse getDisease(String diseaseId) {
+    public DiseaseResponse getDisease(ObjectId diseaseId) {
         Disease disease = diseaseRepository.findById(diseaseId)
                 .orElseThrow(() ->  new DiseaseNotFoundException());
 
         return new DiseaseResponse(
-                disease.getId(),
+                disease.getId().toHexString(),
                 disease.getDiseaseName(),
                 disease.getCaution(),
                 disease.getFoodCategory(),
@@ -48,19 +49,27 @@ public class DiseaseServiceImpl implements DiseaseService {
     public List<CategoryWithDiseasesResponse> searchDiseases(String keyword) {
         List<CategoryResponse> categories = categoryService.getAllCategories();
 
+        System.out.println("조회된 카테고리 수: " + categories.size());
+
+
+
         return categories.stream().map(cat -> {
             List<DiseaseResponse> diseases;
 
+                    System.out.println("카테고리 ID: " + cat.id() + " (" + cat.categoryName() + ")");
+
             if(keyword == null || keyword.isBlank()){
-                diseases = diseaseRepository.findDiseasesByCategoryId(cat.id())
+                diseases = diseaseRepository.findByCategoryId(cat.id())
                         .stream().map(DiseaseResponse::from).toList();
+
+                System.out.println("찾은 질병 수: " + diseases.size());
             } else{
                 diseases = diseaseRepository.findByCategoryIdAndDiseaseNameContaining(cat.id(), keyword)
                         .stream().map(DiseaseResponse::from).toList();
             }
 
             return new CategoryWithDiseasesResponse(
-                    cat.id(),
+                    cat.id().toHexString(),
                     cat.categoryName(),
                     cat.iconUrl(),
                     diseases

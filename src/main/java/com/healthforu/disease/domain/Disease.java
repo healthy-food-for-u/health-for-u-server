@@ -1,9 +1,12 @@
 package com.healthforu.disease.domain;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -16,7 +19,8 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class Disease {
 
     @Id
-    private String id;
+    @JsonSerialize(using = ToStringSerializer.class)
+    private ObjectId id;
 
     @Indexed(unique = true)
     private String diseaseName;
@@ -29,6 +33,7 @@ public class Disease {
 
     private String recommended;
 
-    private String categoryId;
+    @JsonSerialize(using = ToStringSerializer.class)
+    private ObjectId categoryId;
 
 }

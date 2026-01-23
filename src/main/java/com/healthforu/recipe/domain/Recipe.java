@@ -1,8 +1,12 @@
 package com.healthforu.recipe.domain;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import lombok.*;
+import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.util.List;
 
@@ -22,7 +26,8 @@ import java.util.List;
 public class Recipe {
 
     @Id
-    private String id;
+    @JsonSerialize(using = ToStringSerializer.class)
+    private ObjectId id;
 
     private String recipeName;
 
@@ -33,10 +38,14 @@ public class Recipe {
     private String recipeThumbnail;
 
     @Getter
+    @NoArgsConstructor(access = AccessLevel.PROTECTED)
     @AllArgsConstructor
     public static class ManualStep {
-        private int stepNumber;
+        @Field("step")
+        private Integer stepNumber;
+        @Field("text")
         private String stepDescription;
+        @Field("imageUrl")
         private String imageUrl;
     }
 }

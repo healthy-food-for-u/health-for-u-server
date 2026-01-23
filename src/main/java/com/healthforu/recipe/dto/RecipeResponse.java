@@ -1,7 +1,6 @@
 package com.healthforu.recipe.dto;
 
 import com.healthforu.recipe.domain.Recipe;
-import org.springframework.data.annotation.Id;
 
 import java.util.List;
 
@@ -17,7 +16,7 @@ public record RecipeResponse(
 
     public static RecipeResponse from(Recipe recipe, boolean isCaution, boolean isFavorite){
         return new RecipeResponse(
-                recipe.getId(),
+                recipe.getId().toHexString(),
                 recipe.getRecipeName(),
                 recipe.getIngredients(),
                 recipe.getManualSteps(),

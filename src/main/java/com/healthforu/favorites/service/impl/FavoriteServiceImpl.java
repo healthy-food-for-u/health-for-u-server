@@ -10,6 +10,7 @@ import com.healthforu.recipe.domain.Recipe;
 import com.healthforu.recipe.repository.RecipeRepository;
 import com.healthforu.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.bson.types.ObjectId;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -29,7 +30,7 @@ public class FavoriteServiceImpl implements FavoriteService {
      * @param recipeId
      */
     @Override
-    public void toggleFavorite(String userId, String recipeId) {
+    public void toggleFavorite(ObjectId userId, ObjectId recipeId) {
 
         if(!userRepository.existsById(userId)){
             throw new UserNotFoundException();
@@ -60,14 +61,14 @@ public class FavoriteServiceImpl implements FavoriteService {
      * @return
      */
     @Override
-    public List<FavoriteListResponse> getFavoriteRecipes(String userId) {
+    public List<FavoriteListResponse> getFavoriteRecipes(ObjectId userId) {
         if(!userRepository.existsById(userId)){
             throw new UserNotFoundException();
         }
 
         List<FavoriteRecipe> favorites = favoriteRepository.findByUserId(userId);
 
-        List<String> recipeIds = favorites.stream()
+        List<ObjectId> recipeIds = favorites.stream()
                 .map(FavoriteRecipe::getRecipeId)
                 .toList();
 
@@ -75,14 +76,14 @@ public class FavoriteServiceImpl implements FavoriteService {
 
         return recipes.stream()
                 .map(recipe -> {
-                    String favoriteId = favorites.stream()
+                    ObjectId favoriteId = favorites.stream()
                             .filter(f -> f.getRecipeId().equals(recipe.getId()))
                             .findFirst()
                             .map(FavoriteRecipe::getId)
-                            .orElse("");
+                            .orElse(new ObjectId());
 
                     return new FavoriteListResponse(
-                            favoriteId,
+                            favoriteId.toHexString(),
                             recipe.getId(),
                             recipe.getRecipeName(),
                             recipe.getRecipeThumbnail()
@@ -99,8 +100,8 @@ public class FavoriteServiceImpl implements FavoriteService {
      * @return
      */
     @Override
-    public boolean isFavorite(String userId, String recipeId) {
-        if (userId == null || userId.isBlank()) {
+    public boolean isFavorite(ObjectId userId, ObjectId recipeId) {
+        if (userId == null) {
             return false;
         }
 

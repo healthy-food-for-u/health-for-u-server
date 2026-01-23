@@ -1,8 +1,10 @@
 package com.healthforu.favorites.dto;
 
+import org.bson.types.ObjectId;
+
 public record FavoriteListResponse(
-    String favoriteId,
-    String recipeId,
+    String id,
+    ObjectId recipeId,
     String recipeName,
     String recipeThumbnail
 ) {}

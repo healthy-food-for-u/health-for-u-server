@@ -1,6 +1,7 @@
 package com.healthforu.category.dto;
 
 import com.healthforu.disease.dto.DiseaseResponse;
+import org.bson.types.ObjectId;
 
 import java.util.List;
 

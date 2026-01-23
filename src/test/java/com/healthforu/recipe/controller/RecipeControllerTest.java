@@ -3,6 +3,7 @@ package com.healthforu.recipe.controller;
 import com.healthforu.recipe.domain.Recipe;
 import com.healthforu.recipe.dto.RecipeResponse;
 import com.healthforu.recipe.service.RecipeService;
+import org.bson.types.ObjectId;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +41,7 @@ class RecipeControllerTest {
         Recipe.ManualStep step2 = new Recipe.ManualStep(2, "2번 설명", "image.url");
 
         RecipeResponse recipeResponse = new RecipeResponse(
-                "recipe-1",
+                new ObjectId("recipe-1"),
                 "recipe-1name",
                 "새우",
                 List.of(step1, step2),
@@ -48,7 +49,7 @@ class RecipeControllerTest {
         false,
                 false);
 
-        when(recipeService.getRecipe(anyString(), anyString(), anyString()))
+        when(recipeService.getRecipe(any(ObjectId.class), any(ObjectId.class), any(ObjectId.class)))
                 .thenReturn(recipeResponse);
 
         mockMvc.perform(get("/api/recipes/recipe-1")
@@ -69,7 +70,7 @@ class RecipeControllerTest {
         Recipe.ManualStep step2 = new Recipe.ManualStep(2, "2번 설명", "image.url");
 
         RecipeResponse recipeResponse1 = new RecipeResponse(
-                "recipe-1",
+                new ObjectId("recipe-1"),
                 "recipe-1name",
                 "새우",
                 List.of(step1, step2),
@@ -78,7 +79,7 @@ class RecipeControllerTest {
                 false);
 
         RecipeResponse recipeResponse2 = new RecipeResponse(
-                "recipe-2",
+                new ObjectId("recipe-2"),
                 "recipe-2name",
                 "소고기",
                 List.of(step1, step2),
@@ -87,7 +88,7 @@ class RecipeControllerTest {
                 false);
 
         RecipeResponse recipeResponse3 = new RecipeResponse(
-                "recipe-1",
+                new ObjectId("recipe-1"),
                 "recipe-1name",
                 "마시멜로우",
                 List.of(step1, step2),
@@ -97,7 +98,7 @@ class RecipeControllerTest {
 
         Page<RecipeResponse> mockPage = new PageImpl<>(List.of(recipeResponse1, recipeResponse2));
 
-        when(recipeService.getAllRecipes(anyString(), any(Pageable.class), isNull()))
+        when(recipeService.getAllRecipes(any(ObjectId.class), any(Pageable.class), isNull()))
                 .thenReturn(mockPage);
 
         mockMvc.perform(get("/api/recipes")

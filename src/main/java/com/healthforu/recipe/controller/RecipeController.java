@@ -20,7 +20,7 @@ public class RecipeController {
     public ResponseEntity<RecipeResponse> getRecipeDetail(
             @PathVariable("recipeId") ObjectId recipeId,
             @RequestParam("diseaseId") ObjectId diseaseId,
-            @RequestParam("userId") ObjectId userId) {
+            @RequestParam(value = "userId", required = false) ObjectId userId) {
 
         return ResponseEntity.ok(recipeService.getRecipe(diseaseId, recipeId, userId));
     }

@@ -10,12 +10,15 @@ import com.healthforu.recipe.dto.RecipeResponse;
 import com.healthforu.recipe.repository.RecipeRepository;
 import com.healthforu.recipe.service.RecipeService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.bson.types.ObjectId;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+
+@Slf4j
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -61,6 +64,8 @@ public class RecipeServiceImpl implements RecipeService {
      */
     @Override
     public RecipeResponse getRecipe(ObjectId diseaseId, ObjectId recipeId, ObjectId userId) {
+        log.info("조회 요청 - 질환ID: " + diseaseId + ", 레시피ID: " + recipeId);
+
         Disease disease = diseaseRepository.findById(diseaseId)
                 .orElseThrow(() -> new DiseaseNotFoundException());
 

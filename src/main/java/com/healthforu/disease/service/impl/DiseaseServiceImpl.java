@@ -56,7 +56,7 @@ public class DiseaseServiceImpl implements DiseaseService {
         return categories.stream().map(cat -> {
             List<DiseaseResponse> diseases;
 
-                    System.out.println("카테고리 ID: " + cat.id() + " (" + cat.categoryName() + ")");
+            System.out.println("카테고리 ID: " + cat.id() + " (" + cat.categoryName() + ")");
 
             if(keyword == null || keyword.isBlank()){
                 diseases = diseaseRepository.findByCategoryId(cat.id())

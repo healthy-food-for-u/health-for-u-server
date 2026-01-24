@@ -4,13 +4,14 @@ import com.healthforu.user.dto.LoginRequest;
 import com.healthforu.user.dto.SignUpRequest;
 import com.healthforu.user.dto.UserResponse;
 import com.healthforu.user.service.UserService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import jakarta.servlet.http.HttpServletRequest;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/users")
@@ -20,10 +21,8 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("/signup")
-    public ResponseEntity<UserResponse> signUp(@RequestBody SignUpRequest request) {
-        UserResponse response = userService.signUp(request);
-
-        return ResponseEntity.ok(response);
+    public ResponseEntity<UserResponse> signUp(@Valid @RequestBody SignUpRequest request) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(userService.signUp(request));
     }
 
     @PostMapping("/login")
@@ -37,5 +36,11 @@ public class UserController {
     public ResponseEntity<Void> logout(HttpServletRequest request) {
         userService.logout(request);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/check-id")
+    public ResponseEntity<Map<String, Boolean>> checkId(@RequestParam("id") String loginId) {
+        boolean exists = userService.checkLoginIdDuplicate(loginId);
+        return ResponseEntity.ok(Map.of("exists", exists));
     }
 }

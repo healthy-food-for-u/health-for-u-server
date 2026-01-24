@@ -67,6 +67,11 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    @Override
+    public boolean checkLoginIdDuplicate(String loginId) {
+        return userRepository.existsByLoginId(loginId);
+    }
+
     private void validateDuplicateUser(SignUpRequest request) {
         if (userRepository.existsByLoginId(request.getLoginId())) {
             throw new DuplicateIdException();

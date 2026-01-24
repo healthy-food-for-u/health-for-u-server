@@ -14,4 +14,6 @@ public interface UserService {
     void logout(HttpServletRequest request);
 
     boolean checkLoginIdDuplicate(String loginId);
+
+    UserResponse getUserByLoginId(String loginId);
 }

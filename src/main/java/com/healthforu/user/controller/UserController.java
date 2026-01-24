@@ -4,6 +4,7 @@ import com.healthforu.user.dto.LoginRequest;
 import com.healthforu.user.dto.SignUpRequest;
 import com.healthforu.user.dto.UserResponse;
 import com.healthforu.user.service.UserService;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -36,6 +37,16 @@ public class UserController {
     public ResponseEntity<Void> logout(HttpServletRequest request) {
         userService.logout(request);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/user")
+    public ResponseEntity<UserResponse> getCurrentUser(HttpSession session) {
+        String loginId = (String) session.getAttribute("LOGIN_USER");
+        if (loginId == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+
+        return ResponseEntity.ok(userService.getUserByLoginId(loginId));
     }
 
     @GetMapping("/check-id")

@@ -1,10 +1,8 @@
 package com.healthforu.user.service.impl;
 
-import com.healthforu.common.exception.custom.DuplicateEmailException;
-import com.healthforu.common.exception.custom.DuplicateMobileException;
-import com.healthforu.common.exception.custom.DuplicateUserException;
-import com.healthforu.common.exception.custom.UserNotFoundException;
+import com.healthforu.common.exception.custom.*;
 import com.healthforu.user.domain.User;
+import com.healthforu.user.dto.LoginRequest;
 import com.healthforu.user.dto.SignUpRequest;
 import com.healthforu.user.dto.UserResponse;
 import com.healthforu.user.repository.UserRepository;
@@ -20,11 +18,15 @@ import org.springframework.stereotype.Service;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder; // final을 붙여야 생성자 주입이 됨
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public UserResponse signUp(SignUpRequest request) {
         validateDuplicateUser(request);
+
+        if (!request.getPassword().equals(request.getConfirmPassword())) {
+            throw new PasswordNotMatchException();
+        }
 
         String encodedPassword = passwordEncoder.encode(request.getPassword());
 
@@ -42,14 +44,17 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserResponse login(String loginId, String password) {
+    public UserResponse login(LoginRequest request, HttpServletRequest httpServletRequest) {
 
-        User user = userRepository.findByLoginId(loginId)
+        User user = userRepository.findByLoginId(request.getLoginId())
                 .orElseThrow(() -> new UserNotFoundException());
 
-        if(!passwordEncoder.matches(password, user.getPassword())){
-            throw new UserNotFoundException();
+        if(!passwordEncoder.matches(request.getPassword(), user.getPassword())){
+            throw new PasswordNotMatchException();
         }
+
+        HttpSession session = httpServletRequest.getSession(true);
+        session.setAttribute("LOGIN_USER", user.getLoginId());
 
         return UserResponse.from(user);
     }
@@ -62,9 +67,22 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    @Override
+    public boolean checkLoginIdDuplicate(String loginId) {
+        return userRepository.existsByLoginId(loginId);
+    }
+
+    @Override
+    public UserResponse getUserByLoginId(String loginId) {
+        User user = userRepository.findByLoginId(loginId)
+                .orElseThrow(() -> new UserNotFoundException());
+
+        return UserResponse.from(user);
+    }
+
     private void validateDuplicateUser(SignUpRequest request) {
         if (userRepository.existsByLoginId(request.getLoginId())) {
-            throw new DuplicateUserException();
+            throw new DuplicateIdException();
         }
         if (userRepository.existsByEmail(request.getEmail())) {
             throw new DuplicateEmailException();

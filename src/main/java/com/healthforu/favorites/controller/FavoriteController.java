@@ -18,8 +18,8 @@ public class FavoriteController {
     private final FavoriteService favoriteService;
 
     @PostMapping("/toggle")
-    public ResponseEntity<?> toggleFavorite(@RequestParam(required = false) ObjectId userId,
-                                            @RequestParam ObjectId recipeId) {
+    public ResponseEntity<?> toggleFavorite(@RequestParam(value = "userId", required = false) ObjectId userId,
+                                            @RequestParam(value = "recipeId") ObjectId recipeId) {
         if (userId == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                     .body("로그인 후 즐겨찾기를 추가해주세요.");

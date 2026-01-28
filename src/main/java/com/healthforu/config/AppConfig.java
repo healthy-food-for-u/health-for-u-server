@@ -1,4 +1,4 @@
-package com.healthforu.common.config;
+package com.healthforu.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

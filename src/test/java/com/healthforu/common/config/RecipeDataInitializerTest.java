@@ -1,5 +1,6 @@
 package com.healthforu.common.config;
 
+import com.healthforu.config.RecipeDataInitializer;
 import com.healthforu.recipe.domain.Recipe;
 import com.healthforu.recipe.repository.RecipeRepository;
 import org.junit.jupiter.api.DisplayName;

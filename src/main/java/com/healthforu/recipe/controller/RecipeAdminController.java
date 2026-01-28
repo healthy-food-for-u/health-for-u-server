@@ -1,6 +1,6 @@
 package com.healthforu.recipe.controller;
 
-import com.healthforu.common.config.RecipeDataInitializer;
+import com.healthforu.config.RecipeDataInitializer;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

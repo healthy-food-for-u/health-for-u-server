@@ -41,7 +41,7 @@ class RecipeControllerTest {
         Recipe.ManualStep step2 = new Recipe.ManualStep(2, "2번 설명", "image.url");
 
         RecipeResponse recipeResponse = new RecipeResponse(
-                new ObjectId("recipe-1"),
+                "recipe-1",
                 "recipe-1name",
                 "새우",
                 List.of(step1, step2),
@@ -70,7 +70,7 @@ class RecipeControllerTest {
         Recipe.ManualStep step2 = new Recipe.ManualStep(2, "2번 설명", "image.url");
 
         RecipeResponse recipeResponse1 = new RecipeResponse(
-                new ObjectId("recipe-1"),
+                "recipe-1",
                 "recipe-1name",
                 "새우",
                 List.of(step1, step2),
@@ -79,7 +79,7 @@ class RecipeControllerTest {
                 false);
 
         RecipeResponse recipeResponse2 = new RecipeResponse(
-                new ObjectId("recipe-2"),
+                "recipe-2",
                 "recipe-2name",
                 "소고기",
                 List.of(step1, step2),
@@ -88,7 +88,7 @@ class RecipeControllerTest {
                 false);
 
         RecipeResponse recipeResponse3 = new RecipeResponse(
-                new ObjectId("recipe-1"),
+                "recipe-1",
                 "recipe-1name",
                 "마시멜로우",
                 List.of(step1, step2),

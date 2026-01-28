@@ -18,19 +18,23 @@ public class FavoriteController {
     private final FavoriteService favoriteService;
 
     @PostMapping("/toggle")
-    public ResponseEntity<?> toggleFavorite(@RequestParam(value = "userId", required = false) ObjectId userId,
+    public ResponseEntity<?> toggleFavorite(@RequestHeader(name = "X-User-Id") String userIdStr,
                                             @RequestParam(value = "recipeId") ObjectId recipeId) {
-        if (userId == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                    .body("로그인 후 즐겨찾기를 추가해주세요.");
+
+        if (userIdStr == null || userIdStr.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인이 필요합니다.");
         }
+
+        ObjectId userId = new ObjectId(userIdStr);
 
         favoriteService.toggleFavorite(userId, recipeId);
         return ResponseEntity.ok().build();
     }
 
     @GetMapping
-    public ResponseEntity<List<FavoriteListResponse>> getFavoriteRecipes(@RequestParam(required = false) ObjectId userId){
+    public ResponseEntity<List<FavoriteListResponse>> getFavoriteRecipes(@RequestHeader(name = "X-User-Id") String userIdStr){
+
+        ObjectId userId = new ObjectId(userIdStr);
 
         return ResponseEntity.ok(favoriteService.getFavoriteRecipes(userId));
     }

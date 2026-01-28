@@ -11,11 +11,13 @@
           <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.42/lombok-1.18.42.jar" />
         </processorPath>
         <module name="healthforu" />
+        <module name="health-for-u-server" />
       </profile>
     </annotationProcessing>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="health-for-u-server" options="-parameters" />
       <module name="healthforu" options="-parameters" />
     </option>
   </component>

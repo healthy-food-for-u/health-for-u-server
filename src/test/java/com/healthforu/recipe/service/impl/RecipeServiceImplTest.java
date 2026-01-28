@@ -49,7 +49,7 @@ class RecipeServiceImplTest {
 
         Page<Recipe> recipePage = new PageImpl<>(List.of(r1, r2));
 
-        when(diseaseRepository.findById("disease-1")).thenReturn(Optional.of(disease));
+        when(diseaseRepository.findById(new ObjectId("disease-1"))).thenReturn(Optional.of(disease));
         when(recipeRepository.findByRecipeNameContaining(eq("국"), any(Pageable.class)))
                 .thenReturn(recipePage);
 
@@ -80,7 +80,7 @@ class RecipeServiceImplTest {
         Recipe r2 = Recipe.builder().recipeName("소고기 무국").ingredients("소고기, 무").build();
 
         Page<Recipe> filteredPage = new PageImpl<>(List.of(r2));
-        when(diseaseRepository.findById("disease-1")).thenReturn(Optional.of(disease));
+        when(diseaseRepository.findById(new ObjectId("disease-1"))).thenReturn(Optional.of(disease));
         when(recipeRepository.findByExcludeCaution(any(Disease.class), any(Pageable.class)))
                 .thenReturn(filteredPage);
 
@@ -109,8 +109,8 @@ class RecipeServiceImplTest {
         Recipe recipe = Recipe.builder().recipeName("새우 죽").ingredients("새우, 쌀").build();
         ReflectionTestUtils.setField(recipe, "id", "recipe-1");
 
-        when(diseaseRepository.findById(anyString())).thenReturn(Optional.of(disease));
-        when(recipeRepository.findById(anyString())).thenReturn(Optional.of(recipe));
+        when(diseaseRepository.findById(any(ObjectId.class))).thenReturn(Optional.of(disease));
+        when(recipeRepository.findById(any(ObjectId.class))).thenReturn(Optional.of(recipe));
 
         RecipeResponse result = recipeService.getRecipe(disease.getId(), recipe.getId(), user.getId());
 
@@ -133,8 +133,8 @@ class RecipeServiceImplTest {
         Recipe recipe = Recipe.builder().recipeName("새우 죽").ingredients("새우, 쌀").build();
         ReflectionTestUtils.setField(recipe, "id", "recipe-1");
 
-        when(diseaseRepository.findById(anyString())).thenReturn(Optional.of(disease));
-        when(recipeRepository.findById(anyString())).thenReturn(Optional.of(recipe));
+        when(diseaseRepository.findById(any(ObjectId.class))).thenReturn(Optional.of(disease));
+        when(recipeRepository.findById(any(ObjectId.class))).thenReturn(Optional.of(recipe));
 
         RecipeResponse result = recipeService.getRecipe(disease.getId(), recipe.getId(), user.getId());
 

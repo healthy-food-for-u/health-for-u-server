@@ -32,14 +32,11 @@ public class User {
     @Indexed(unique = true)
     private String mobile;
 
-    private String password; // 암호화된 비밀번호 ($2b$10... 형식이니 그대로 String)
-
     @Builder
     public User(String loginId, String userName, String email, String mobile, String password){
         this.loginId=loginId;
         this.userName=userName;
         this.email=email;
         this.mobile=mobile;
-        this.password=password;
     }
 }

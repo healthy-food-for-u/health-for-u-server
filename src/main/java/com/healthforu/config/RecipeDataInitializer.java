@@ -1,4 +1,4 @@
-package com.healthforu.common.config;
+package com.healthforu.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.healthforu.recipe.domain.Recipe;

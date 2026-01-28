@@ -1,6 +1,5 @@
 package com.healthforu.favorites.service.impl;
 
-import com.healthforu.common.exception.custom.RecipeNotFoundException;
 import com.healthforu.common.exception.custom.UserNotFoundException;
 import com.healthforu.favorites.domain.FavoriteRecipe;
 import com.healthforu.favorites.dto.FavoriteListResponse;
@@ -14,6 +13,7 @@ import org.bson.types.ObjectId;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -32,25 +32,17 @@ public class FavoriteServiceImpl implements FavoriteService {
     @Override
     public void toggleFavorite(ObjectId userId, ObjectId recipeId) {
 
-        if(!userRepository.existsById(userId)){
-            throw new UserNotFoundException();
-        }
+        Optional<FavoriteRecipe> existingFavorite = favoriteRepository.findByUserIdAndRecipeId(userId, recipeId);
 
-        if(!recipeRepository.existsById(recipeId)){
-            throw new RecipeNotFoundException();
+        if (existingFavorite.isPresent()) {
+            favoriteRepository.delete(existingFavorite.get());
+        } else {
+            FavoriteRecipe favorite = FavoriteRecipe.builder()
+                    .userId(userId)
+                    .recipeId(recipeId)
+                    .build();
+            favoriteRepository.save(favorite);
         }
-
-        favoriteRepository.findByUserIdAndRecipeId(userId, recipeId)
-                .ifPresentOrElse(
-                        favorite -> favoriteRepository.delete(favorite),
-                        () -> {
-                            FavoriteRecipe newFavorite = FavoriteRecipe.builder()
-                                    .userId(userId)
-                                    .recipeId(recipeId)
-                                    .build();
-                            favoriteRepository.save(newFavorite);
-                        }
-                );
 
     }
 

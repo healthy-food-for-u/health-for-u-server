@@ -35,4 +35,4 @@ jobs:
         with:
           context: .
           push: true
-          tags: ghcr.io/${{ github.repository_owner }}/health-service:latest
+          tags: ghcr.io/healthy-food-for-u/health-service:latest

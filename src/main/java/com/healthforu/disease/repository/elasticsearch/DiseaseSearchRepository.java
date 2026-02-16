@@ -1,4 +1,7 @@
 package com.healthforu.disease.repository.elasticsearch;
 
-public interface DiseaseSearchRepository {
+import com.healthforu.disease.domain.DiseaseDocument;
+import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
+
+public interface DiseaseSearchRepository extends ElasticsearchRepository<DiseaseDocument, String> {
 }

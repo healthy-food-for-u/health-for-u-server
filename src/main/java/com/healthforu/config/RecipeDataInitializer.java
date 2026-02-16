@@ -18,11 +18,11 @@ import java.util.stream.Collectors;
 public class RecipeDataInitializer implements CommandLineRunner {
 
     private final RecipeRepository mongoRecipeRepository;
-    private final RecipeSearchRepository esRecipeSearchRepository;
+    private final RecipeSearchRepository recipeSearchRepository;
 
     @Override
     public void run(String... args) throws Exception {
-        if(esRecipeSearchRepository.count() > 0){
+        if(recipeSearchRepository.count() > 0){
             log.info("Elasticsearch에 이미 데이터가 존재합니다. 마이그레이션을 건너뜁니다.");
             return;
         }
@@ -32,9 +32,9 @@ public class RecipeDataInitializer implements CommandLineRunner {
         List<Recipe> allRecipes = mongoRecipeRepository.findAll();
 
         List<RecipeDocument> documents = allRecipes.stream()
-                .map(RecipeDocument::from) // 아까 만든 변환 메서드
+                .map(RecipeDocument::from)
                 .collect(Collectors.toList());
 
-        esRecipeSearchRepository.saveAll(documents);
+        recipeSearchRepository.saveAll(documents);
     }
 }

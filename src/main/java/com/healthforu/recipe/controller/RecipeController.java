@@ -2,6 +2,7 @@ package com.healthforu.recipe.controller;
 
 import com.healthforu.recipe.dto.RecipeResponse;
 import com.healthforu.recipe.service.RecipeService;
+import com.healthforu.recipe.service.elasticsearch.RecipeSearchService;
 import lombok.RequiredArgsConstructor;
 import org.bson.types.ObjectId;
 import org.springframework.data.domain.Page;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 public class RecipeController {
 
     private final RecipeService recipeService;
+    private final RecipeSearchService recipeSearchService;
 
     @GetMapping("/{recipeId}")
     public ResponseEntity<RecipeResponse> getRecipeDetail(
@@ -31,6 +33,6 @@ public class RecipeController {
             @RequestParam(value = "keyword", required = false) String keyword,
             Pageable pageable) {
 
-        return ResponseEntity.ok(recipeService.getAllRecipes(diseaseId, pageable, keyword));
+        return ResponseEntity.ok(recipeSearchService.searchRecipes(keyword, diseaseId, pageable));
     }
 }

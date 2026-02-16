@@ -3,6 +3,7 @@ package com.healthforu.disease.controller;
 import com.healthforu.category.dto.CategoryWithDiseasesResponse;
 import com.healthforu.disease.dto.DiseaseResponse;
 import com.healthforu.disease.service.DiseaseService;
+import com.healthforu.disease.service.elasticsearch.DiseaseSearchService;
 import lombok.RequiredArgsConstructor;
 import org.bson.types.ObjectId;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +17,7 @@ import java.util.List;
 public class DiseaseController {
 
     private final DiseaseService diseaseService;
+    private final DiseaseSearchService diseaseSearchService;
 
     @GetMapping("/{diseaseId}")
     public ResponseEntity<DiseaseResponse> getDiseaseDetail(@PathVariable("diseaseId") ObjectId diseaseId){
@@ -28,7 +30,7 @@ public class DiseaseController {
     public ResponseEntity<List<CategoryWithDiseasesResponse>> getDiseasesByCategories(
             @RequestParam(value = "keyword", required = false) String keyword){
 
-        return ResponseEntity.ok(diseaseService.searchDiseases(keyword));
+        return ResponseEntity.ok(diseaseSearchService.searchDiseases(keyword));
     }
 
 }

@@ -1,6 +1,6 @@
 package com.healthforu.common.config;
 
-import com.healthforu.config.RecipeDataInitializer;
+import com.healthforu.config.MongoDataInitializer;
 import com.healthforu.recipe.domain.Recipe;
 import com.healthforu.recipe.repository.RecipeRepository;
 import org.junit.jupiter.api.DisplayName;
@@ -22,10 +22,10 @@ import static org.mockito.Mockito.when;
 
 @SpringBootTest
 @Import(MongoTestConfig.class)
-class RecipeDataInitializerTest {
+class MongoDataInitializerTest {
 
     @Autowired
-    private RecipeDataInitializer recipeDataInitializer;
+    private MongoDataInitializer mongoDataInitializer;
 
     @Autowired
     private RecipeRepository recipeRepository;
@@ -51,7 +51,7 @@ class RecipeDataInitializerTest {
         when(restTemplate.getForObject(anyString(), eq(Map.class)))
                 .thenReturn(mockResponse);
 
-        recipeDataInitializer.importRecipesFromExternalApi();
+        mongoDataInitializer.importRecipesFromExternalApi();
 
         List<Recipe> savedRecipes = recipeRepository.findAll();
 

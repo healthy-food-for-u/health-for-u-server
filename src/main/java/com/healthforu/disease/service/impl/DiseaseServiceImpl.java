@@ -9,13 +9,17 @@ import com.healthforu.disease.dto.DiseaseResponse;
 import com.healthforu.disease.repository.DiseaseRepository;
 import com.healthforu.disease.service.DiseaseService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.bson.types.ObjectId;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
+@Transactional(readOnly = true)
 public class DiseaseServiceImpl implements DiseaseService {
 
     private final DiseaseRepository diseaseRepository;
@@ -49,20 +53,20 @@ public class DiseaseServiceImpl implements DiseaseService {
     public List<CategoryWithDiseasesResponse> searchDiseases(String keyword) {
         List<CategoryResponse> categories = categoryService.getAllCategories();
 
-        System.out.println("조회된 카테고리 수: " + categories.size());
+        log.info("조회된 카테고리 수: {}", categories.size());
 
 
 
         return categories.stream().map(cat -> {
             List<DiseaseResponse> diseases;
 
-            System.out.println("카테고리 ID: " + cat.id() + " (" + cat.categoryName() + ")");
+                    log.info("카테고리 ID: {} ({})", cat.id(), cat.categoryName());
 
             if(keyword == null || keyword.isBlank()){
                 diseases = diseaseRepository.findByCategoryId(cat.id())
                         .stream().map(DiseaseResponse::from).toList();
 
-                System.out.println("찾은 질병 수: " + diseases.size());
+                log.info("찾은 질병 수: {}", diseases.size());
             } else{
                 diseases = diseaseRepository.findByCategoryIdAndDiseaseNameContaining(cat.id(), keyword)
                         .stream().map(DiseaseResponse::from).toList();

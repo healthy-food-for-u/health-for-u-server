@@ -64,7 +64,7 @@ public class RecipeServiceImpl implements RecipeService {
      */
     @Override
     public RecipeResponse getRecipe(ObjectId diseaseId, ObjectId recipeId, ObjectId userId) {
-        log.info("조회 요청 - 질환ID: " + diseaseId + ", 레시피ID: " + recipeId);
+        log.info("조회 요청 - 질환ID: {}, 레시피ID: {}", diseaseId, recipeId);
 
         Disease disease = diseaseRepository.findById(diseaseId)
                 .orElseThrow(() -> new DiseaseNotFoundException());

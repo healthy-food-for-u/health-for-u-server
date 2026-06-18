@@ -23,7 +23,11 @@ public class DiseaseDataInitializer implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        if(diseaseSearchRepository.count() > 0){
+        // count() 대신 딱 1건만 조회해서 비어있는지 확인
+        boolean hasData = diseaseSearchRepository.findAll(org.springframework.data.domain.PageRequest.of(0, 1))
+                .hasContent();
+
+        if (hasData) {
             log.info("Elasticsearch에 이미 데이터가 존재합니다. 마이그레이션을 건너뜁니다.");
             return;
         }

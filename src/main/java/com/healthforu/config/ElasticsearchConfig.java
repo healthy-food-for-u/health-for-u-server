@@ -6,6 +6,8 @@ import org.springframework.data.elasticsearch.client.ClientConfiguration;
 import org.springframework.data.elasticsearch.client.elc.ElasticsearchConfiguration;
 import org.springframework.data.elasticsearch.repository.config.EnableElasticsearchRepositories;
 
+import java.time.Duration;
+
 @Configuration
 @EnableElasticsearchRepositories(basePackages = "com.healthforu")
 public class ElasticsearchConfig extends ElasticsearchConfiguration {
@@ -20,6 +22,8 @@ public class ElasticsearchConfig extends ElasticsearchConfiguration {
 
         return ClientConfiguration.builder()
                 .connectedTo(hostAndPort)
+                .withConnectTimeout(Duration.ofSeconds(30)) // 5초 제한 해제 (30초로 변경)
+                .withSocketTimeout(Duration.ofSeconds(30))  // 소켓 타임아웃도 30초로 확장
                 .build();
     }
 }

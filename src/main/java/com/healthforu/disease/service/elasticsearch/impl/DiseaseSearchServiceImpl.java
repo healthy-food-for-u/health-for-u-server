@@ -1,5 +1,6 @@
 package com.healthforu.disease.service.elasticsearch.impl;
 
+import co.elastic.apm.api.CaptureSpan;
 import com.healthforu.category.dto.CategoryResponse;
 import com.healthforu.category.dto.CategoryWithDiseasesResponse;
 import com.healthforu.category.service.CategoryService;
@@ -34,6 +35,7 @@ public class DiseaseSearchServiceImpl implements DiseaseSearchService {
      * 검색어가 존재할 경우, 결과가 비어있는 카테고리는 결과 목록에서 제외됩니다.
      */
     @Override
+    @CaptureSpan(value = "MongoDB-Disease-Query", type = "db", subtype = "mongodb", action = "query") // apm 에이전트가 시각화할 수 있도록 함
     public List<CategoryWithDiseasesResponse> searchDiseases(String keyword) {
         List<CategoryResponse> categories = categoryService.getAllCategories();
 

@@ -45,7 +45,7 @@ public class RecipeSearchServiceImpl implements RecipeSearchService {
      * @throws DiseaseNotFoundException 유효하지 않은 질병 ID일 경우 발생
      */
     @Override
-    @CaptureSpan(value = "MongoDB-Disease-Query", type = "db", subtype = "mongodb", action = "query") // apm 에이전트가 시각화할 수 있도록 함
+    @CaptureSpan(value = "Elasticsearch-Recipe-Query", type = "db", subtype = "mongodb", action = "query") // apm 에이전트가 시각화할 수 있도록 함
     public Page<RecipeResponse> searchRecipes(String keyword, ObjectId diseaseId, Pageable pageable) {
 
         DiseaseResponse diseaseResponse = diseaseService.getDisease(diseaseId);

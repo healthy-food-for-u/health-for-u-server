@@ -1,8 +1,10 @@
 package com.healthforu.disease.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.healthforu.disease.domain.Disease;
 import org.bson.types.ObjectId;
 
+@JsonInclude(JsonInclude.Include.NON_NULL) // 값이 null인 필드는 JSON 결과에서 아예 제외
 public record DiseaseResponse(
     String id,
     String diseaseName,

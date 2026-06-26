@@ -78,7 +78,7 @@ public class DiseaseSearchServiceImpl implements DiseaseSearchService {
                     .map(doc -> new DiseaseResponse(
                             doc.getId(),
                             doc.getDiseaseName(),
-                            doc.getCaution(),
+                            null,
                             null,
                             new ObjectId(doc.getCategoryId())
                     ))

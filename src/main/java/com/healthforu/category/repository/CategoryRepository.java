@@ -6,12 +6,10 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 import java.util.List;
-import java.util.Optional;
 
 
 public interface CategoryRepository extends MongoRepository<Category, ObjectId> {
 
     List<Category> findAll(Sort sort);
 
-    Optional<Category> findByCategorySlug(String slug);
 }

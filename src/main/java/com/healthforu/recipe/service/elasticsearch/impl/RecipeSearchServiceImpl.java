@@ -45,7 +45,7 @@ public class RecipeSearchServiceImpl implements RecipeSearchService {
      * @throws DiseaseNotFoundException 유효하지 않은 질병 ID일 경우 발생
      */
     @Override
-    @CaptureSpan(value = "Elasticsearch-Recipe-Query", type = "db", subtype = "mongodb", action = "query") // apm 에이전트가 시각화할 수 있도록 함
+    @CaptureSpan(value = "Elasticsearch-Recipe-Query", type = "db", subtype = "elasticsearch", action = "query") // apm 에이전트가 시각화할 수 있도록 함
     public Page<RecipeResponse> searchRecipes(String keyword, ObjectId diseaseId, Pageable pageable) {
 
         DiseaseResponse diseaseResponse = diseaseService.getDisease(diseaseId);
@@ -80,18 +80,22 @@ public class RecipeSearchServiceImpl implements RecipeSearchService {
 
         SearchHits<RecipeDocument> searchHits = elasticsearchOperations.search(query, RecipeDocument.class);
 
+        // 키워드 유무 확인
+        boolean hasKeyword = (keyword != null && !keyword.isBlank());
+
         // 레시피 데이터 포장
         List<RecipeResponse> content = searchHits.getSearchHits().stream()
                 .map(hit -> {
                     RecipeDocument doc = hit.getContent();
 
-                    boolean isCaution = cautionList.stream().anyMatch(c ->
+                    // 키워드가 있을 때만 검색(검색어가 있을 때는, 주의 식품 포함 여부와 상관없이 연관된 레시피를 모두 반환해야 함)
+                    boolean isCaution = hasKeyword && cautionList.stream().anyMatch(c ->
                             doc.getRecipeName().contains(c) || doc.getIngredients().contains(c));
 
                     return new RecipeResponse(
                             doc.getId(),
                             doc.getRecipeName(),
-                            doc.getIngredients(),
+                            null,
                             null,
                             doc.getRecipeThumbnail(),
                             isCaution,

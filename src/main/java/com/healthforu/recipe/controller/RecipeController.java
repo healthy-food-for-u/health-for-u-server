@@ -31,8 +31,9 @@ public class RecipeController {
     public ResponseEntity<Page<RecipeResponse>> getAllRecipes(
             @RequestParam("diseaseId") ObjectId diseaseId,
             @RequestParam(value = "keyword", required = false) String keyword,
+            @RequestParam(required = false, defaultValue = "") String caution,
             Pageable pageable) {
 
-        return ResponseEntity.ok(recipeSearchService.searchRecipes(keyword, diseaseId, pageable));
+        return ResponseEntity.ok(recipeSearchService.searchRecipes(keyword, diseaseId, caution, pageable));
     }
 }

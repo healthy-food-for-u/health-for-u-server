@@ -44,12 +44,13 @@ public class RecipeSearchServiceImpl implements RecipeSearchService {
      * @return               검색 결과 및 주의 식품 포함 여부가 담긴 레시피 페이지 객체
      * @throws DiseaseNotFoundException 유효하지 않은 질병 ID일 경우 발생
      */
+    // TODO : 프론트엔드와 협업하는 파라미터 패싱 방식 적용
     @Override
     @CaptureSpan(value = "Elasticsearch-Recipe-Query", type = "db", subtype = "elasticsearch", action = "query") // apm 에이전트가 시각화할 수 있도록 함
-    public Page<RecipeResponse> searchRecipes(String keyword, ObjectId diseaseId, Pageable pageable) {
+    public Page<RecipeResponse> searchRecipes(String keyword, ObjectId diseaseId, String caution, Pageable pageable) {
 
-        DiseaseResponse diseaseResponse = diseaseService.getDisease(diseaseId);
-        String caution = (diseaseResponse != null) ? diseaseResponse.caution() : "";
+//        DiseaseResponse diseaseResponse = diseaseService.getDisease(diseaseId);
+//        String caution = (diseaseResponse != null) ? diseaseResponse.caution() : "";
 
         List<String> cautionList = (caution != null && !caution.isBlank())
                 ? Arrays.stream(caution.split(","))

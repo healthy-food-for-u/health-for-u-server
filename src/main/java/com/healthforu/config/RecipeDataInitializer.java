@@ -21,7 +21,7 @@ public class RecipeDataInitializer implements CommandLineRunner {
     private final RecipeSearchRepository recipeSearchRepository;
 
     @Override
-    public void run(String... args) throws Exception {
+    public void run(String... args) {
         if(recipeSearchRepository.count() > 0){
             log.info("Elasticsearch에 이미 데이터가 존재합니다. 마이그레이션을 건너뜁니다.");
             return;

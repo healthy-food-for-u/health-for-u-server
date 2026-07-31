@@ -19,13 +19,19 @@ public class FavoriteController {
 
     @PostMapping("/toggle")
     public ResponseEntity<?> toggleFavorite(@RequestHeader(name = "X-User-Id") String userIdStr,
-                                            @RequestParam(value = "recipeId") ObjectId recipeId) {
+                                            @RequestParam(value = "recipeId") String recipeIdStr) {
 
-        if (userIdStr == null || userIdStr.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인이 필요합니다.");
+        if (userIdStr == null || userIdStr.isEmpty() || userIdStr.length() != 24) {
+            throw new IllegalArgumentException("유효하지 않은 유저 ID 형식입니다: " + userIdStr);
+        }
+
+        // 24자리 규격에 맞는지 검증 또는 안전하게 변환
+        if (recipeIdStr == null || recipeIdStr.length() != 24) {
+            throw new IllegalArgumentException("유효하지 않은 레시피 ID 형식입니다.");
         }
 
         ObjectId userId = new ObjectId(userIdStr);
+        ObjectId recipeId = new ObjectId(recipeIdStr);
 
         favoriteService.toggleFavorite(userId, recipeId);
         return ResponseEntity.ok().build();
